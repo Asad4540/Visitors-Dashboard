@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+main {
+    background-image: url('/public/images/bg-login.png') !important;
+}
+
+.loginPage .heading {
+    color: #313131;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 1.625rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.loginPage .subheading {
+    color: #6E6E6E;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.loginPage .form-control {
+    border-radius: 0.59906rem !important;
+    border: 0 solid #F9F9F9 !important;
+    background: #F5F5F5 !important;
+    display: flex;
+    height: 4.125rem !important;
+    /* padding: 1.57838rem 20.06888rem 1.29663rem 1.99363rem !important; */
+    align-items: center;
+    flex-shrink: 0;
+    align-self: stretch;
+}
+
+.loginPage .form-control::placeholder {
+    color: #BFBFBF !important;
+    font-family: Roboto;
+    font-size: 1.07994rem !important;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.checkbox-text {
+    color: #BFBFBF !important;
+    font-family: Roboto;
+    font-size: 0.99688rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.rememberMe {
+    border-radius: 0.1875rem;
+    border: 1px solid #C9C9C9;
+    background: #FFF;
+    width: 1.5625rem !important;
+    height: 1.5625rem !important;
+}
+
+.loginBtn {
+    display: flex;
+    width: 100%;
+    padding: 1.25rem 0;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.68506rem;
+    border: none;
+    background: #007AFF;
+}
+
+.loginBtn span {
+    color: #FFF;
+    font-family: Roboto;
+    font-size: 1.375rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
