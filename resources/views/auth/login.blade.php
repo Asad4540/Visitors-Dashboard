@@ -34,7 +34,8 @@
                     </div>
                 </div>
                 <div class="row justify-content-center align-items-center py-2 g-3">
-                    <form action="" method="post">
+                    <form method="post" action="{{ route('login') }}">
+                        @csrf
                         <div class="col-12 py-2">
                             <input type="email" class="form-control" name="email" id="email"
                                 placeholder="© Email Address" required>
@@ -48,7 +49,7 @@
                             <span class="checkbox-text">Remember Me</span>
                         </div>
                         <div class="col-12 py-2">
-                            <button class="loginBtn"><span>Login</span></button>
+                            <button type="submit" class="loginBtn"><span>Login</span></button>
                         </div>
                     </form>
                 </div>

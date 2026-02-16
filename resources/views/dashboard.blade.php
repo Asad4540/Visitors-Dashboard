@@ -1,17 +1,42 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+    <div class="container-fluid mt-4">
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
+
+        <div class="mb-3">
+            <h3 class="fw-bold">Dashboard Overview</h3>
+            <p class="text-muted">Welcome back! Here's what's happening with your data.</p>
+        </div>
+
+        <div class="row gap-2 px-2 mt-4 ">
+            <div class="col card-bg py-4">
+                <span class="card-heading">Total Visitors</span>
+                <div class="d-flex justify-content-between mt-2">
+                    <span class="card-numbers">633</span>
+                    <img src="{{ asset('images/card-1.png') }}" alt="">
                 </div>
             </div>
+            <div class="col card-bg py-4">
+                <span class="card-heading">Approved</span>
+                <div class="d-flex justify-content-between mt-2">
+                    <span class="card-numbers">133</span>
+                    <img src="{{ asset('images/card-2.png') }}" alt="">
+                </div>
+            </div>
+            <div class="col card-bg py-4">
+                <span class="card-heading">Pending</span>
+                <div class="d-flex justify-content-between mt-2">
+                    <span class="card-numbers">423</span>
+                    <img src="{{ asset('images/card-3.png') }}" alt="">
+                </div>
+            </div>
+            <div class="col card-bg py-4">
+                <span class="card-heading">Rejected </span>
+                <div class="d-flex justify-content-between mt-2">
+                    <span class="card-numbers">153</span>
+                    <img src="{{ asset('images/card-4.png') }}" alt="">
+                </div>
+            </div>
+
         </div>
     </div>
 </x-app-layout>

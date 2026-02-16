@@ -7,15 +7,19 @@ Route::get('/', function () {
     return view('app');
 });
 
-Route::get('/', function () {
-    return auth()->check()
-        ? redirect()->route('dashboard')
-        : redirect()->route('login');
-});
+// Route::get('/', function () {
+//     return auth()->check()
+//         ? redirect()->route('dashboard')
+//         : redirect()->route('login');
+// });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/visitors-management', function () {
+    return view('visitorsManagement');
+})->middleware(['auth', 'verified'])->name('visitorsManagement');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
