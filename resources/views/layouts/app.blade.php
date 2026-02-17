@@ -20,28 +20,34 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div>
-            <a href="/" style="border-bottom : solid 1px #fff">
+
+            {{-- Logo --}}
+            <a href="/" style="border-bottom: solid 1px #fff">
                 <img src="{{ asset('images/VM-White-Logo.png') }}" alt="VM Logo" class="vm-logo" style="width: 130px;">
             </a>
-            <a href="{{ route('dashboard') }}" style="margin-top:15px"><i class="bi bi-columns-gap"></i> Dashboard</a>
-            <a href="{{ route('visitorsManagement') }}" style="margin-top:5px"><i class="bi bi-people"></i> Visitors
-                Management</a>
-            <!-- <a href="#" style="margin-top:5px"><i class="bi bi-box-arrow-left"></i> Log out</a> -->
+
+            {{-- Dashboard --}}
+            <a href="{{ route('dashboard') }}"
+                class="sidebar-link {{ request()->routeIs('dashboard') ? 'active-link' : '' }}">
+                <i class="bi bi-columns-gap"></i> Dashboard
+            </a>
+
+            {{-- Visitors Management --}}
+            <a href="{{ route('visitorsManagement') }}"
+                class="sidebar-link {{ request()->routeIs('visitorsManagement') ? 'active-link' : '' }}">
+                <i class="bi bi-people"></i> Visitors Management
+            </a>
+
+            {{-- Logout --}}
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit"
-                    style="background:none; border:none; color:white; margin-top:15px; padding-left:20px">
+                <button type="submit" class="sidebar-link logout-btn">
                     <i class="bi bi-box-arrow-left"></i> Log out
                 </button>
             </form>
+
         </div>
-        <div style="margin-bottom:20px">
-            @php
-                $currentYear = date('Y');
-            @endphp
-            <span class="footer-note" style="padding:0 10px">© {{$currentYear}} VM Visitors</span> <br>
-            <span class="footer-subnote" style="padding:0 10px">All Rights Reserved</span>
-        </div>
+
     </div>
 
     <!-- Navbar -->

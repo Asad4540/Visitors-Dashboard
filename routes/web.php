@@ -32,7 +32,7 @@ Route::post(
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function () {
 
     // Dashboard
     Route::get(

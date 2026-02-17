@@ -205,7 +205,33 @@ body {
     line-height: normal;
 }
 
-.pagination{
+.pagination {
     margin-left: 20px;
-    gap:5px;
+    gap: 5px;
+}
+
+.sidebar-link {
+    display: block;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.sidebar-link:hover {
+    background-color: #333;
+}
+
+.active-link {
+    background-color: #FFCB48;
+    color: #000 !important;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
+    color: white;
+    padding: 10px 20px;
 }
