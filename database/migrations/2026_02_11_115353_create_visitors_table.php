@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -20,7 +19,7 @@ return new class extends Migration
 
             $table->enum('purpose', ['interview', 'meeting', 'maintenance', 'other'])->default('other');
             $table->string('person_to_meet', 255)->nullable();
-            $table->enum('department', ['hr', 'it', 'marketing', 'ra', 'sales', 'telemarketing','mis', 'management', 'other'])->nullable();
+            $table->enum('department', ['hr', 'it', 'marketing', 'ra', 'sales', 'telemarketing', 'mis', 'management', 'other'])->nullable();
             $table->enum('id_type', ['aadhar', 'passport', 'driving_license', 'voter_id', 'other'])->nullable();
             $table->string('id_number', 255)->nullable();
 

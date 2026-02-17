@@ -20,39 +20,74 @@
                         <small class="text-muted">All Registered Visitors & Candidates</small>
                     </div>
 
-                    <button class="btn btn-primary">Export</button>
+                    <!-- <button class="btn btn-primary">Export</button> -->
                 </div>
 
                 <!-- Filters -->
-                <div class="row g-2 mb-3">
-                    <div class="col-md-3">
-                        <input type="text" class="form-control" placeholder="Search users, Email, or Department...">
-                    </div>
+                <form method="GET" action="{{ route('visitorsManagement') }}">
+                    <div class="row g-2 mb-3">
 
-                    <div class="col-md-2">
-                        <select class="form-select">
-                            <option>Date Range</option>
-                        </select>
-                    </div>
+                        {{-- Search --}}
+                        <div class="col-md-3">
+                            <input type="text" name="search" value="{{ request('search') }}" class="form-control"
+                                placeholder="Search name, email or mobile">
+                        </div>
 
-                    <div class="col-md-2">
-                        <select class="form-select">
-                            <option>Department</option>
-                        </select>
-                    </div>
+                        {{-- Date --}}
+                        <div class="col-md-2">
+                            <input type="date" name="date" value="{{ request('date') }}" class="form-control">
+                        </div>
 
-                    <div class="col-md-2">
-                        <select class="form-select">
-                            <option>Status</option>
-                        </select>
-                    </div>
+                        {{-- Department --}}
+                        <div class="col-md-2">
+                            <select name="department" class="form-select">
+                                <option value="">Department</option>
+                                <option value="hr" {{ request('department') == 'hr' ? 'selected' : '' }}>HR</option>
+                                <option value="it" {{ request('department') == 'it' ? 'selected' : '' }}>IT</option>
+                                <option value="marketing" {{ request('department') == 'marketing' ? 'selected' : '' }}>
+                                    Marketing</option>
+                                <option value="sales" {{ request('department') == 'sales' ? 'selected' : '' }}>Sales
+                                </option>
+                            </select>
+                        </div>
 
-                    <div class="col-md-2">
-                        <select class="form-select">
-                            <option>Purpose of Visit</option>
-                        </select>
+                        {{-- Status --}}
+                        <div class="col-md-2">
+                            <select name="status" class="form-select">
+                                <option value="">Status</option>
+                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved
+                                </option>
+                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending
+                                </option>
+                                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected
+                                </option>
+                            </select>
+                        </div>
+
+                        {{-- Purpose --}}
+                        <div class="col-md-2">
+                            <select name="purpose" class="form-select">
+                                <option value="">Purpose</option>
+                                <option value="interview" {{ request('purpose') == 'interview' ? 'selected' : '' }}>
+                                    Interview
+                                </option>
+                                <option value="meeting" {{ request('purpose') == 'meeting' ? 'selected' : '' }}>Meeting
+                                </option>
+                                <option value="maintenance" {{ request('purpose') == 'maintenance' ? 'selected' : '' }}>
+                                    Maintenance</option>
+                            </select>
+                        </div>
+
+                        {{-- Filter Button --}}
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-dark w-100">
+                                Filter
+                            </button>
+                        </div>
+
                     </div>
-                </div>
+                </form>
+
 
                 <!-- Table -->
                 <div class="table-responsive">
@@ -72,62 +107,100 @@
 
                         <tbody>
 
-                            @for($i = 0; $i < 6; $i++)
+                            @forelse($visitors as $visitor)
                                 <tr>
                                     <td>
-                                        <strong>Shubham Patil</strong><br>
-                                        <small class="text-muted">patilshubham.1@gmail.com</small>
+                                        <strong>{{ $visitor->first_name }} {{ $visitor->last_name }}</strong><br>
+                                        <small class="text-muted">{{ $visitor->email }}</small>
                                     </td>
-                                    <td>09356864194</td>
-                                    <td>Interview</td>
+
+                                    <td>{{ $visitor->mobile }}</td>
+
+                                    <td>{{ ucfirst($visitor->purpose) }}</td>
+
                                     <td>
-                                        Priyanka <br>
-                                        <small class="text-muted">HR</small>
+                                        {{ $visitor->person_to_meet ?? '-' }} <br>
+                                        <small class="text-muted">{{ strtoupper($visitor->department) }}</small>
                                     </td>
+
                                     <td>
-                                        PAN Card <br>
-                                        <small class="text-muted">ABCDE1234F</small>
+                                        {{ strtoupper($visitor->id_type) }} <br>
+                                        <small class="text-muted">{{ $visitor->id_number }}</small>
                                     </td>
+
                                     <td>
-                                        09/02/2026 <br>
-                                        <small class="text-muted">08:59 pm</small>
+                                        {{ $visitor->visted_at->format('d/m/Y') }} <br>
+                                        <small class="text-muted">{{ $visitor->visted_at->format('h:i A') }}</small>
                                     </td>
+
                                     <td>
-                                        <select class="form-select form-select-sm">
-                                            <option selected>Approved</option>
-                                            <option>Pending</option>
-                                            <option>Rejected</option>
+                                        <select class="form-select form-select-sm status-dropdown"
+                                            data-id="{{ $visitor->id }}">
+                                            <option value="pending" {{ $visitor->approval_status == 'pending' ? 'selected' : '' }}>
+                                                Pending
+                                            </option>
+
+                                            <option value="approved" {{ $visitor->approval_status == 'approved' ? 'selected' : '' }}>
+                                                Approved
+                                            </option>
+
+                                            <option value="rejected" {{ $visitor->approval_status == 'rejected' ? 'selected' : '' }}>
+                                                Rejected
+                                            </option>
                                         </select>
                                     </td>
-                                </tr>
-                            @endfor
 
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="text-center">No Visitors Found</td>
+                                </tr>
+                            @endforelse
                         </tbody>
 
                     </table>
                 </div>
 
                 <!-- Footer -->
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <small class="text-muted">Showing 6 of 6 visitors</small>
+                @if ($visitors->hasPages())
+                    <div class="mt-4">
 
-                    <nav>
-                        <ul class="pagination pagination-sm mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link">Previous</a>
-                            </li>
-                            <li class="page-item active">
-                                <a class="page-link">1</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                        <div class="d-flex justify-content-center">
+                            {{ $visitors->links() }}
+                        </div>
+                    </div>
+                @endif
 
             </div>
         </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.status-dropdown').forEach(function (dropdown) {
+            dropdown.addEventListener('change', function () {
+
+                let visitorId = this.dataset.id;
+                let status = this.value;
+
+                fetch(`/visitors/${visitorId}/status`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({
+                        approval_status: status
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert("Status updated successfully!");
+                        }
+                    });
+            });
+        });
+    </script>
+
 
 </x-app-layout>

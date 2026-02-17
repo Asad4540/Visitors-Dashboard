@@ -234,117 +234,140 @@
 
         <main class="container rounded-2">
             <div class="form-details">
-                <form action="submit" method="post">
+
+                {{-- Success Message --}}
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <form action="{{ route('visitors.store') }}" method="POST">
+                    @csrf
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="firstName">First Name</label>
-                            <input type="text" class="form-control" name="firstName" id="firstName"
+                            <label for="first_name">First Name</label>
+                            <input type="text" class="form-control @error('first_name') is-invalid @enderror"
+                                name="first_name" id="first_name" value="{{ old('first_name') }}"
                                 placeholder="Enter First Name" required>
-                            <small class="text-danger" id="firstNameError" style="display:none;"></small>
+                            @error('first_name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
+
                         <div class="col-md-6 mb-3">
-                            <label for="lastName">Last Name</label>
-                            <input type="text" class="form-control" name="lastName" id="lastName"
+                            <label for="last_name">Last Name</label>
+                            <input type="text" class="form-control @error('last_name') is-invalid @enderror"
+                                name="last_name" id="last_name" value="{{ old('last_name') }}"
                                 placeholder="Enter Last Name" required>
-                            <small class="text-danger" id="lastNameError" style="display:none;"></small>
+                            @error('last_name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
+                    {{-- Mobile --}}
                     <div class="form-group mb-3">
-                        <label for="mobileNumber">Mobile Number</label>
-                        <div class="d-flex">
-                            <input type="text" class="form-control" id="phoneCode" value="+91" readonly
-                                style="max-width: 70px;">
-                            <input type="text" class="form-control ms-2" name="mobileNumber" id="mobileNumber"
-                                placeholder="Enter 10-digit number" maxlength="10" required>
-                        </div>
-                        <small class="text-danger" id="mobileNumberError" style="display:none;"></small>
+                        <label for="mobile">Mobile Number</label>
+                        <input type="tel" class="form-control @error('mobile') is-invalid @enderror" name="mobile"
+                            id="mobile" value="{{ old('mobile') }}" placeholder="Enter 10-digit number"
+                            pattern="[0-9]{10}" maxlength="10" required>
+                        @error('mobile')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
+                    {{-- Email --}}
                     <div class="form-group mb-3">
                         <label for="email">Email ID</label>
-                        <input type="email" class="form-control" name="email" id="email" placeholder="Enter Email ID"
-                            required>
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
+                            id="email" value="{{ old('email') }}" placeholder="Enter Email ID" required>
+                        @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
-
+                    {{-- Purpose --}}
                     <div class="form-group mb-3">
-                        <label for="visit">Purpose of Visit</label>
-                        <select class="form-control form-select" id="visit" required onchange="showOtherInput()">
-                            <option value="" selected>--Select--</option>
-                            <option value="Interview">Interview</option>
-                            <option value="Meeting">Meeting</option>
-                            <option value="Maintainence">Maintainence</option>
+                        <label for="purpose">Purpose of Visit</label>
+                        <select class="form-control form-select @error('purpose') is-invalid @enderror" name="purpose"
+                            id="purpose" required>
+                            <option value="">--Select--</option>
+                            <option value="interview" {{ old('purpose') == 'interview' ? 'selected' : '' }}>Interview</option>
+                            <option value="meeting" {{ old('purpose') == 'meeting' ? 'selected' : '' }}>Meeting</option>
+                            <option value="maintenance" {{ old('purpose') == 'maintenance' ? 'selected' : '' }}>Maintenance
+                            </option>
+                            <option value="other" {{ old('purpose') == 'other' ? 'selected' : '' }}>Other</option>
+                        </select>
+                        @error('purpose')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    {{-- Person To Meet --}}
+                    <div class="form-group mb-3">
+                        <label for="person_to_meet">Person to Meet</label>
+                        <input type="text" class="form-control" name="person_to_meet" id="person_to_meet"
+                            value="{{ old('person_to_meet') }}" placeholder="Enter Name">
+                    </div>
+
+                    {{-- Department --}}
+                    <div class="form-group mb-3">
+                        <label for="department">Department</label>
+                        <select class="form-control form-select" name="department" id="department">
+                            <option value="">--Select--</option>
+                            <option value="hr">HR</option>
+                            <option value="it">IT</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="ra">Research Analyst</option>
+                            <option value="sales">Sales</option>
+                            <option value="telemarketing">Telemarketing</option>
+                            <option value="mis">MIS</option>
+                            <option value="management">Management</option>
                             <option value="other">Other</option>
                         </select>
-                        <div id="otherInput" style="display: none; margin-top: 10px;">
-                            <label for="otherOption">Specify other:</label> <br>
-                            <input type="text" id="otherOption" required>
-                        </div>
                     </div>
 
+                    {{-- ID Type --}}
                     <div class="form-group mb-3">
-                        <label for="person">Person to Meet</label>
-                        <input type="text" class="form-control" name="person" id="person" placeholder="Enter Name"
-                            required>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="dept">Department</label>
-                        <select class="form-control form-select" id="dept" required onchange="showOtherInput()">
-                            <option value="" selected>--Select--</option>
-                            <option value="HR">HR</option>
-                            <option value="IT">IT</option>
-                            <option value="Marketing">Marketing</option>
-                            <option value="Research Analyst">Research Analyst</option>
-                            <option value="Sales">Sales</option>
-                            <option value="Telemarketing">Telemarketing</option>
-                            <option value="MIS">MIS</option>
-                            <option value="Management">Management</option>
-                            <option value="other">Other</option>
+                        <label for="id_type">ID Type</label>
+                        <select class="form-control form-select" name="id_type" id="id_type">
+                            <option value="">--Select--</option>
+                            <option value="aadhar">Aadhar Card</option>
+                            <option value="passport">Passport</option>
+                            <option value="driving_license">Driving License</option>
+                            <option value="voter_id">Voter ID</option>
                         </select>
-                        <div id="otherInput2" style="display: none; margin-top: 10px;">
-                            <label for="otherOption">Specify other:</label> <br>
-                            <input type="text" id="otherOption2" required>
-                        </div>
                     </div>
 
+                    {{-- ID Number --}}
                     <div class="form-group mb-3">
-                        <label for="identity">ID Type</label>
-                        <select class="form-control form-select" id="identity" required onchange="showOtherInput()">
-                            <option value="" selected>--Select--</option>
-                            <option value="Aadhar Card">Aadhar Card</option>
-                            <option value="Pan Card">Pan Card</option>
-                            <option value="Driving License">Driving License</option>
-                            <option value="other">Other</option>
-                        </select>
-                        <div id="otherInput3" style="display: none; margin-top: 10px;">
-                            <label for="otherOption">Specify other:</label> <br>
-                            <input type="text" id="otherOption3" required>
-                        </div>
+                        <label for="id_number">ID Number</label>
+                        <input type="text" class="form-control" name="id_number" id="id_number"
+                            value="{{ old('id_number') }}" placeholder="Enter ID Number">
                     </div>
 
+                    {{-- Birth Year --}}
                     <div class="form-group mb-3">
-                        <label for="idNumber">ID Number</label>
-                        <input type="text" class="form-control" name="idNumber" id="idNumber"
-                            placeholder="Enter ID Number" required>
-                        <small class="text-danger" id="idNumberError" style="display:none;"></small>
+                        <label for="birth_year">Birth Year</label>
+                        <input type="number" class="form-control" name="birth_year" id="birth_year"
+                            value="{{ old('birth_year') }}" placeholder="Enter Birth Year" min="1950"
+                            max="{{ date('Y') }}" required>
                     </div>
 
-                    <div class="form-group mb-3">
-                        <label for="dob">Birth Year</label>
-                        <input type="date" class="form-control" name="dob" id="dob" placeholder="Enter Birth Year"
-                            required>
-                    </div>
-
-                    <span class="foot-text">Your information is secure and used only for office entry.</span>
+                    <span class="foot-text">
+                        Your information is secure and used only for office entry.
+                    </span>
 
                     <button type="submit" class="btn btn-submit mt-4 mb-4">
                         Check In
                     </button>
+
                 </form>
             </div>
         </main>
+
 
         <footer class="container d-flex  justify-content-between px-3">
             <div class="logo py-2">
