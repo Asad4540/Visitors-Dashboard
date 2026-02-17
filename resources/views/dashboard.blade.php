@@ -58,10 +58,9 @@
                             <td>{{ $visitor->mobile }}</td>
                             <td>{{ ucfirst($visitor->purpose) }}</td>
                             <td>
-                                <span class="badge 
-                                        @if($visitor->approval_status == 'approved') bg-success
-                                        @elseif($visitor->approval_status == 'rejected') bg-danger
-                                        @else bg-warning
+                                <span class="badge  @if($visitor->approval_status == 'approved') bg-success
+                                @elseif($visitor->approval_status == 'rejected') bg-danger
+                                    @else bg-warning
                                         @endif">
                                     {{ ucfirst($visitor->approval_status) }}
                                 </span>
