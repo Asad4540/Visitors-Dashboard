@@ -204,3 +204,8 @@ body {
     font-weight: 700;
     line-height: normal;
 }
+
+.pagination{
+    margin-left: 20px;
+    gap:5px;
+}

@@ -1,30 +1,58 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VisitorController;
+
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
-    return view('app');
+    return view('app'); // Your welcome / registration page
 });
 
-// Route::get('/', function () {
-//     return auth()->check()
-//         ? redirect()->route('dashboard')
-//         : redirect()->route('login');
-// });
+/*
+|--------------------------------------------------------------------------
+| Visitor Form Submission (Public)
+|--------------------------------------------------------------------------
+*/
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::post(
+    '/visitors',
+    [VisitorController::class, 'store']
+)->name('visitors.store');
 
-Route::get('/visitors-management', function () {
-    return view('visitorsManagement');
-})->middleware(['auth', 'verified'])->name('visitorsManagement');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+/*
+|--------------------------------------------------------------------------
+| Authenticated Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    // Dashboard
+    Route::get(
+        '/dashboard',
+        [VisitorController::class, 'dashboard']
+    )->name('dashboard');
+
+    // Visitors Management Page
+    Route::get(
+        '/visitors-management',
+        [VisitorController::class, 'index']
+    )->name('visitorsManagement');
+
+    // Update Visitor Status (AJAX)
+    Route::post(
+        '/visitors/{visitor}/status',
+        [VisitorController::class, 'updateStatus']
+    )->name('visitors.updateStatus');
+
 });
+
 
 require __DIR__ . '/auth.php';
