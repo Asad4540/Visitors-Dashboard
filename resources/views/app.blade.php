@@ -294,9 +294,11 @@
                         <select class="form-control form-select @error('purpose') is-invalid @enderror" name="purpose"
                             id="purpose" required>
                             <option value="">--Select--</option>
-                            <option value="interview" {{ old('purpose') == 'interview' ? 'selected' : '' }}>Interview</option>
+                            <option value="interview" {{ old('purpose') == 'interview' ? 'selected' : '' }}>Interview
+                            </option>
                             <option value="meeting" {{ old('purpose') == 'meeting' ? 'selected' : '' }}>Meeting</option>
-                            <option value="maintenance" {{ old('purpose') == 'maintenance' ? 'selected' : '' }}>Maintenance
+                            <option value="maintenance" {{ old('purpose') == 'maintenance' ? 'selected' : '' }}>
+                                Maintenance
                             </option>
                             <option value="other" {{ old('purpose') == 'other' ? 'selected' : '' }}>Other</option>
                         </select>
@@ -350,12 +352,12 @@
 
                     {{-- Birth Year --}}
                     <div class="form-group mb-3">
-                        <label for="birth_year">Birth Year</label>
-                        <input type="number" class="form-control" name="birth_year" id="birth_year"
-                            value="{{ old('birth_year') }}" placeholder="Enter Birth Year" min="1950"
-                            max="{{ date('Y') }}" required>
+                        <label for="birth_year">Birth Date</label>
+                        <input type="date" class="form-control" name="birth_year" id="birth_year"
+                            value="{{ old('birth_year') }}" min="1950-01-01" max="{{ date('Y-m-d') }}"
+                            onclick="this.showPicker()" required>
                     </div>
-
+                    
                     <span class="foot-text">
                         Your information is secure and used only for office entry.
                     </span>
