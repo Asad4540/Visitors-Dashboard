@@ -39,8 +39,43 @@
 
         </div>
 
+
+
         <div class="mt-4">
-            <h3 class="fw-bold">Latest visitors</h3>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="fw-bold mb-0">Latest Visitors</h3>
+
+    {{-- Export Form --}}
+    <form action="{{ route('visitors.export') }}" method="GET" class="d-flex align-items-center gap-2">
+        
+        <div>
+            <input type="date" name="from"
+                class="form-control form-control-sm {{ $errors->has('from') ? 'is-invalid' : '' }}"
+                value="{{ request('from') }}"
+                max="{{ date('Y-m-d') }}"
+                required>
+            @error('from')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div>
+            <input type="date" name="to"
+                class="form-control form-control-sm {{ $errors->has('to') ? 'is-invalid' : '' }}"
+                value="{{ request('to') }}"
+                max="{{ date('Y-m-d') }}"
+                required>
+            @error('to')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <button type="submit" class="btn btn-success btn-sm text-nowrap">
+            ⬇ Download Excel
+        </button>
+
+    </form>
+</div>
             <table class="card-bg table table-bordered table-hover">
                 <thead>
                     <tr>

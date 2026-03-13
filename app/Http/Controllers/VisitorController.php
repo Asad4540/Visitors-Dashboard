@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Visitor;
 use Illuminate\Http\Request;
+use App\Exports\VisitorsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class VisitorController extends Controller
 {
@@ -15,7 +17,7 @@ class VisitorController extends Controller
             'mobile' => 'required|digits:10',
             'email' => 'required|email|max:150',
             'purpose' => 'required|in:interview,meeting,maintenance,other',
-            'birth_year' => 'required|integer|min:1950|max:' . date('Y'),
+            'birth_year' => 'required|date|date_format:Y-m-d|before_or_equal:today|after_or_equal:1950-01-01',
         ]);
 
         Visitor::create([
@@ -112,5 +114,20 @@ class VisitorController extends Controller
             'rejected'
         ));
     }
+
+    public function exportExcel(Request $request)
+{
+    $request->validate([
+        'from' => 'required|date',
+        'to'   => 'required|date|after_or_equal:from',
+    ]);
+
+    $filename = 'visitors_' . $request->from . '_to_' . $request->to . '.xlsx';
+
+    return Excel::download(
+        new VisitorsExport($request->from, $request->to),
+        $filename
+    );
+}
 
 }

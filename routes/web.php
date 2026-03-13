@@ -51,8 +51,16 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
         '/visitors/{visitor}/status',
         [VisitorController::class, 'updateStatus']
     )->name('visitors.updateStatus');
+    
+
+     // Export Excel
+    Route::get(
+        '/visitors/export',
+        [VisitorController::class, 'exportExcel']
+    )->name('visitors.export');
 
 });
+
 
 
 require __DIR__ . '/auth.php';
