@@ -6,6 +6,8 @@ use App\Models\Visitor;
 use Illuminate\Http\Request;
 use App\Exports\VisitorsExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Mail\VisitorRegisteredMail;
+use Illuminate\Support\Facades\Mail;
 
 class VisitorController extends Controller
 {
@@ -20,7 +22,7 @@ class VisitorController extends Controller
             'birth_year' => 'required|date|date_format:Y-m-d|before_or_equal:today|after_or_equal:1950-01-01',
         ]);
 
-        Visitor::create([
+      $visitor =  Visitor::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'mobile' => $request->mobile,
@@ -33,7 +35,18 @@ class VisitorController extends Controller
             'birth_year' => $request->birth_year,
         ]);
 
-        return redirect()->back()->with('success', 'Visitor registered Succesfully');
+
+        // ✅ Send email to HR
+        try {
+            Mail::to(env('HR_EMAIL'))->send(new VisitorRegisteredMail($visitor));
+        } catch (\Exception $e) {
+            \Log::error('Mail failed: ' . $e->getMessage());
+        }
+
+        return redirect()->back()->with('success', 'Visitor registered Successfully');
+
+
+        //return redirect()->back()->with('success', 'Visitor registered Succesfully');
     }
 
     public function index(Request $request)
@@ -95,6 +108,7 @@ class VisitorController extends Controller
 
     }
 
+
     public function dashboard()
     {
         $visitors = Visitor::orderBy('visted_at', 'desc')
@@ -116,18 +130,19 @@ class VisitorController extends Controller
     }
 
     public function exportExcel(Request $request)
-{
-    $request->validate([
-        'from' => 'required|date',
-        'to'   => 'required|date|after_or_equal:from',
-    ]);
+    {
+        $request->validate([
+            'from' => 'required|date',
+            'to' => 'required|date|after_or_equal:from',
+        ]);
 
-    $filename = 'visitors_' . $request->from . '_to_' . $request->to . '.xlsx';
+        $filename = 'visitors_' . $request->from . '_to_' . $request->to . '.xlsx';
 
-    return Excel::download(
-        new VisitorsExport($request->from, $request->to),
-        $filename
-    );
+        return Excel::download(
+            new VisitorsExport($request->from, $request->to),
+            $filename
+        );
+    }
+
 }
 
-}
