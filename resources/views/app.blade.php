@@ -322,7 +322,7 @@
         name="person_to_meet"
         id="person_to_meet"
         required
-    >
+    >  <option value="">--Select--</option>
          <option value="Priyanka Kella">Priyanka Kella</option>
         <option value="Kalyani Gadre">Kalyani Gadre</option>
         <option value="Shreeja Sail">Shreeja Sail</option>
