@@ -308,11 +308,36 @@
                     </div>
 
                     {{-- Person To Meet --}}
-                    <div class="form-group mb-3">
+                    <!-- <div class="form-group mb-3">
                         <label for="person_to_meet">Person to Meet</label>
                         <input type="text" class="form-control" name="person_to_meet" id="person_to_meet"
                             value="{{ old('person_to_meet') }}" placeholder="Enter Name">
-                    </div>
+                    </div> -->
+
+                  <div class="form-group mb-3">
+    <label for="person_to_meet">Person to Meet</label>
+
+    <select
+        class="form-control form-select @error('person_to_meet') is-invalid @enderror"
+        name="person_to_meet"
+        id="person_to_meet"
+        required
+    >
+         <option value="Priyanka Kella">Priyanka Kella</option>
+        <option value="Kalyani Gadre">Kalyani Gadre</option>
+        <option value="Shreeja Sail">Shreeja Sail</option>
+        <option value="Aishwarya Pardeshi">Aishwarya Pardeshi</option>
+    </select>
+
+    @error('person_to_meet')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+
+    
+
+
+
 
                     {{-- Department --}}
                     <div class="form-group mb-3">
