@@ -9,45 +9,62 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Mail\VisitorRegisteredMail;
 use Illuminate\Support\Facades\Mail;
 
+
+
 class VisitorController extends Controller
 {
+
+
     public function store(Request $request)
-    {
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'mobile' => 'required|digits:10',
-            'email' => 'required|email|max:150',
-            'purpose' => 'required|in:interview,meeting,maintenance,other',
-            'birth_year' => 'required|date|date_format:Y-m-d|before_or_equal:today|after_or_equal:1950-01-01',
-        ]);
+{
+    $request->validate([
+        'first_name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'mobile' => 'required|digits:10',
+        'email' => 'required|email|max:150',
+        'purpose' => 'required|in:interview,meeting,maintenance,other',
+        'person_to_meet' => 'required|in:Priyanka Kella,Kalyani Gadre,Shreeja Sail,Aishwarya Pardeshi',
+        'birth_year' => 'required|date|date_format:Y-m-d|before_or_equal:today|after_or_equal:1950-01-01',
+    ]);
 
-      $visitor =  Visitor::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'mobile' => $request->mobile,
-            'email' => $request->email,
-            'purpose' => strtolower($request->purpose),
-            'person_to_meet' => $request->person_to_meet,
-            'department' => strtolower($request->department),
-            'id_type' => strtolower($request->id_type),
-            'id_number' => $request->id_number,
-            'birth_year' => $request->birth_year,
-        ]);
+    $personEmails = [
+        'Priyanka Kella' => 'priyanka.kella@vereigenmedia.in',
+        'Kalyani Gadre' => 'kalyani.gadre@vereigenmedia.in',
+        'Shreeja Sail' => 'shreeja.sail@vereigenmedia.com',
+        'Aishwarya Pardeshi' => 'aishwarya.pardeshi@vereigenmedia.com',
+    ];
 
+    $personEmail = $personEmails[$request->person_to_meet];
 
-        // ✅ Send email to HR
-        try {
-            Mail::to(env('HR_EMAIL'))->send(new VisitorRegisteredMail($visitor));
-        } catch (\Exception $e) {
-            \Log::error('Mail failed: ' . $e->getMessage());
-        }
+    $visitor = Visitor::create([
+        'first_name' => $request->first_name,
+        'last_name' => $request->last_name,
+        'mobile' => $request->mobile,
+        'email' => $request->email,
+        'purpose' => strtolower($request->purpose),
+        'person_to_meet' => $request->person_to_meet,
+        'department' => strtolower($request->department),
+        'id_type' => strtolower($request->id_type),
+        'id_number' => $request->id_number,
+        'birth_year' => $request->birth_year,
+    ]);
 
-        return redirect()->back()->with('success', 'Visitor registered Successfully');
+    // Send email to HR + selected Person to Meet
+    try {
+        Mail::to([
+            env('HR_EMAIL'),
+            $personEmail,
+        ])->send(new VisitorRegisteredMail($visitor));
 
-
-        //return redirect()->back()->with('success', 'Visitor registered Succesfully');
+    } catch (\Exception $e) {
+        \Log::error('Mail failed: ' . $e->getMessage());
     }
+
+    return redirect()->back()->with(
+        'success',
+        'Visitor registered Successfully'
+    );
+}
 
     public function index(Request $request)
     {
